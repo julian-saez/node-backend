@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: node_backend_db
+    restart: always
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    ports:
+      - "27018:27017"
+    environment:
+      MONGODB_ROOT_PASSWORD: 123456 
+      MONGODB_USERNAME: admin
+      MONGODB_PASSWORD: admin
+      MONGODB_DATABASE: admin
+    volumes:
+       - data:/bitnami/mongodb
+  
+volumes:
+  data:
+    driver: "local"
