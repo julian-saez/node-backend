@@ -1,34 +1,59 @@
-const userModel = require('../models/users');
+const UserModel = require('../models/users');
 
+export const getAllUsers = async (_: any, res: any) => {
+    try{
+        const data = await UserModel.find({});
 
-export const getItems = (_: any, res: any) => {
-    res.send( 'Hola' );
+        res.send({ data: data })
+    } catch( err ) {
+        res.send( err );
+    }
+}
+
+export const getUserById = async ( req: any, res: any ) => {
+    const id = req.params.id;
+    try{
+        const data = await UserModel.findById( id );
+
+        res.send({ data: data })
+    } catch( err ) {
+        res.send( err );
+    }
 }
 
 export const createUser = async ( req: any, res: any ) => {
-    const {email, password } = req.body;
+    const { email, password } = req.body;
     try { 
-        const response = await userModel.create({
+        const data = await UserModel.create({
             email: email,
             password: password
         });
 
-        res.send({ message: "se ha creado correctamente", result: response, body: req.body })
+        res.send({ data: data })
     } catch ( err ) {
-        console.log( err )
         res.send( {
             message: "mensaje de error",
         } );
     } 
 }
-// const createItem = () => {
 
-// }
+export const updateUserEmail = async ( req: { body: { email: string, currentEmail: string } }, res: any ) => {
+    const { email, currentEmail } = req.body;
+    try {
+        const data = await UserModel.findOneAndUpdate({ email: currentEmail }, { email: email });
+        res.send({ data: data })
+    } catch( err ) {
+        res.send( err );
+    }
+}
 
-// const updateItem = () => {
+export const deleteUser = async (req: any, res: any) => {
+    const { email } = req.body;
+    try{
+        const data = await UserModel.deleteOne( { email: email } );
 
-// }
-
-// const deleteItem = () => {
-
-// }
+        res.send({ data: data })
+    } catch( err ) {
+        res.send( err );
+    }
+}
