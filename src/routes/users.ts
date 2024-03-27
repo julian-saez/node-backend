@@ -1,12 +1,15 @@
 import express from 'express';
-import { getAllUsers, getUserById, createUser, updateUserEmail, deleteUser } from '../controllers/users';
+import { getAllUsers, getUserById, updateUserEmail, deleteUser, login, register } from '../controllers/users';
+const { requireAuth } = require('../middlewares/users');
 const router = express.Router();
 
-router.get('/', getAllUsers);
+router.get('/', requireAuth, getAllUsers);
 
 router.get('/:id', getUserById);
 
-router.post('/', createUser);
+router.post('/login', login);
+
+router.post('/register', register);
 
 router.patch('/changeEmail', updateUserEmail);
 
